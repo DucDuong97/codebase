@@ -35,6 +35,8 @@ class LexerFactory(object):
         m.addRule('FOR', 'keyword_lower_onespace')
         m.addRule('WHILE', 'keyword_lower_onespace')
 
+        m.addParseRules(['php_scope'])
+
         m.build()
 
         return m

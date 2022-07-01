@@ -11,4 +11,3 @@ context = {}
 context['file'] = 'files/Controller.php'
 m.context(context)
 m.testFile()
-print(m.getReport())

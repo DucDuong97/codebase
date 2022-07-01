@@ -5,11 +5,13 @@ class PHPLexer(Lexer):
     def __init__(self):
         # List of token names.   This is always required
         super().__init__('php', {
+            'PHP_START':[], 'PHP_END':[],
+
             'PAREN_BRACE':[], 'COMMENT':[],'COMMENT_MULTILINE':[], 'STRING':[],
 
-            'LPAREN':[],'RPAREN':[],'LBRACE':[],'RBRACE':[],'LBRACKET':[],'RBRACKET':[],
+            'LPAREN':[],'RPAREN':[],'LBRACE':[],'RBRACE':[],'LBRACKET':[],'RBRACKET':[],'SEMICOLON':[],'COMMA':[],
 
-            'UN_OPS':[],'BIN_OPS':[],'ARROW':[],'SEMICOLON':[],'COMMA':[],
+            'UN_OPS':[],'BIN_OPS':[],'ARROW':[],
 
             'IF':[],'FOR':[],'ELSE':[],'WHILE':[],
 
@@ -23,6 +25,16 @@ class PHPLexer(Lexer):
             'var_name': set(),
             'const_name': set(),
         })
+
+    def t_PHP_START(self,t):
+        r'^<\?php'
+        t.lexer.lasttok = t.type
+        return t
+    
+    def t_PHP_END(self,t):
+        r'\?>'
+        t.lexer.lasttok = t.type
+        return t
 
     def t_COMMENT(self,t):
         r'//.*'

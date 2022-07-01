@@ -16,7 +16,10 @@ class Lexer(object):
         self.checkers = checkers | {
             'TEST_ADD_RULE':[],'TEST_ADD_RULE_FROM_MODULE':[],
         }
-        self.report = report
+        self.report = report | {
+            'tokens':[],
+        }
+        self.parse_rules = []
 
 
     def t_TEST_ADD_RULE(self,t):
@@ -53,6 +56,11 @@ class Lexer(object):
     def addRules(self, pattern, rules=[]):
         for rule in rules:
             self.addRule(pattern, rule)
+    
+    def addParseRules(self, rules=[]):
+        for rule in rules:
+            module = __import__('rules.'+self.lang+'.parse', fromlist=[rule])
+            self.parse_rules.append(getattr(getattr(module, rule), rule))
 
 
     # Build the lexer
@@ -76,6 +84,11 @@ class Lexer(object):
             tok = self.lexer.token()
             if not tok: 
                 break
+            self.report['tokens'].append(tok.type)
+        
+        for checker in self.parse_rules:
+            checker(self.report, self.lexer.context)
+        
 
 
     # Test it output

@@ -6,6 +6,10 @@
 
 		const CSRF_TOKEN_LENGTH = 32;
 
+		function __construct(){
+			
+		}
+
 		/**
 		 * Render view content
 		 * @return string
@@ -70,5 +74,3 @@
 			return false;
 		}
 	}
-
-?>
