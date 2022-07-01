@@ -1,6 +1,7 @@
 
 import os
 import sys
+import time
 from pathlib import Path
 
 
@@ -20,5 +21,13 @@ if not lexer:
 
 lexer.context({ "code_dir": lang_dir })
 
+start_time = time.time()
 lexer.testTempFiles()
+exec_time = time.time() - start_time
 
+print()
+print('***********')
+print('REPORT')
+print('***********')
+print('total lines:', lexer.report['total_lines'])
+print('Execution time:', exec_time, 'seconds')

@@ -8,6 +8,6 @@ def keyword_lower_onespace(t):
         print("""
             ------------------------
             violate: keyword_lower_onespace
-            line: {}
+            line: {} pos: {}
             file: {}
-        """.format(t.lineno, t.lexer.context['file']))
+        """.format(t.lineno, t.value, t.lexer.context['file']))

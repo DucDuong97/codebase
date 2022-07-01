@@ -1,2 +1,2 @@
-class hellowo
-ld() {
+
+if (count($users) != 1)

@@ -24,6 +24,8 @@ class LexerFactory(object):
         m.addRule('RBRACKET', 'rbracket_nospace')
         m.addRule('SEMICOLON', 'semicolon_nospace')
         m.addRule('COMMA', 'comma_space')
+        m.addRule('EQ', 'eq_nospace')
+        m.addRule('NOT', 'unops_nospace')
         m.addRule('UN_OPS', 'unops_nospace')
         m.addRule('BIN_OPS', 'binops_nospace')
 

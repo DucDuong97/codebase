@@ -7,9 +7,9 @@ class PHPLexer(Lexer):
         super().__init__('php', {
             'PHP_START':[], 'PHP_END':[],
 
-            'PAREN_BRACE':[], 'COMMENT':[],'COMMENT_MULTILINE':[], 'STRING':[],
+            'PAREN_BRACE':[], 'COMMENT':[],'COMMENT_MULTILINE':[], 'STRING_DOUBLE':[], 'STRING_SINGLE':[],
 
-            'LPAREN':[],'RPAREN':[],'LBRACE':[],'RBRACE':[],'LBRACKET':[],'RBRACKET':[],'SEMICOLON':[],'COMMA':[],
+            'LPAREN':[],'RPAREN':[],'LBRACE':[],'RBRACE':[],'LBRACKET':[],'RBRACKET':[],'SEMICOLON':[],'COMMA':[],'EQ':[],'NOT':[],
 
             'UN_OPS':[],'BIN_OPS':[],'ARROW':[],
 
@@ -45,8 +45,13 @@ class PHPLexer(Lexer):
         t.lexer.lineno += t.value.count('\n')
         return t
     
-    def t_STRING(self,t):
+    def t_STRING_DOUBLE(self,t):
         r'"([\s\S]*?)"'
+        t.lexer.lineno += t.value.count('\n')
+        return t
+    
+    def t_STRING_SINGLE(self,t):
+        r"'([\s\S]*?)'"
         t.lexer.lineno += t.value.count('\n')
         return t
     
@@ -114,15 +119,29 @@ class PHPLexer(Lexer):
         return t
     
     def t_UN_OPS(self,t):
-        r'\+\+|--|\*\*|!'
+        r'\+\+|--|\*\*'
         for checker in self.checkers['UN_OPS']:
             checker(t)
         t.lexer.lasttok = t.type
         return t
     
     def t_BIN_OPS(self,t):
-        r'\+|-|\*|/|\*\*|!=|==|!==|>|<|>=|<=|\|\||&&|='
+        r'\+=|-=|\+|-|\*|\/|\*\*|!=|==|!==|>=|<=|>|<|\|\||&&'
         for checker in self.checkers['BIN_OPS']:
+            checker(t)
+        t.lexer.lasttok = t.type
+        return t
+    
+    def t_NOT(self,t):
+        r'!'
+        for checker in self.checkers['NOT']:
+            checker(t)
+        t.lexer.lasttok = t.type
+        return t
+    
+    def t_EQ(self,t):
+        r'='
+        for checker in self.checkers['EQ']:
             checker(t)
         t.lexer.lasttok = t.type
         return t

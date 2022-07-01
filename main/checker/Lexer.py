@@ -18,6 +18,7 @@ class Lexer(object):
         }
         self.report = report | {
             'tokens':[],
+            'total_lines':0,
         }
         self.parse_rules = []
 
@@ -112,5 +113,12 @@ class Lexer(object):
         result = list(Path(self.TEMP_DIR).rglob("*."+self.lang))
         for file_name in result:
             self.testFile(file_name)
+            self.reset()
         
         shutil.rmtree(self.TEMP_DIR)
+
+
+    def reset(self):
+        self.report['total_lines'] += self.lexer.lineno
+        self.lexer.lineno = 0
+        self.report['tokens'] = []

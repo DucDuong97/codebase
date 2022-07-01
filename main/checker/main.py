@@ -8,6 +8,6 @@ from Factory import LexerFactory
 m = LexerFactory().buildPHPLexer()
 
 context = {}
-context['file'] = 'files/Controller.php'
+context['file'] = 'files/test.php'
 m.context(context)
 m.testFile()
