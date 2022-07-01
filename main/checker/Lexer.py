@@ -109,13 +109,16 @@ class Lexer(object):
     # Test it output
     def testTempFiles(self):
         shutil.copytree(self.lexer.context['code_dir'], self.TEMP_DIR)
-
-        result = list(Path(self.TEMP_DIR).rglob("*."+self.lang))
-        for file_name in result:
-            self.testFile(file_name)
-            self.reset()
         
-        shutil.rmtree(self.TEMP_DIR)
+        try:
+            # the code that may cause an exception
+            result = list(Path(self.TEMP_DIR).rglob("*."+self.lang))
+            for file_name in result:
+                self.testFile(file_name)
+                self.reset()
+        finally:
+            # the code that always executes
+            shutil.rmtree(self.TEMP_DIR)
 
 
     def reset(self):
