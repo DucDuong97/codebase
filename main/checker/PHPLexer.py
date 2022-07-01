@@ -11,7 +11,7 @@ class PHPLexer(Lexer):
 
             'LPAREN':[],'RPAREN':[],'LBRACE':[],'RBRACE':[],'LBRACKET':[],'RBRACKET':[],'SEMICOLON':[],'COMMA':[],'EQ':[],'NOT':[],
 
-            'UN_OPS':[],'BIN_OPS':[],'ARROW':[],
+            'UN_OPS':[],'BIN_OPS':[],'ARROW':[],'DOUBLE_ARROW':[],
 
             'IF':[],'FOR':[],'ELSE':[],'WHILE':[],
 
@@ -58,6 +58,13 @@ class PHPLexer(Lexer):
     def t_ARROW(self,t):
         r'->'
         for checker in self.checkers['ARROW']:
+            checker(t)
+        t.lexer.lasttok = t.type
+        return t
+    
+    def t_DOUBLE_ARROW(self,t):
+        r'=>'
+        for checker in self.checkers['DOUBLE_ARROW']:
             checker(t)
         t.lexer.lasttok = t.type
         return t
