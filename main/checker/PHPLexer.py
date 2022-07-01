@@ -133,7 +133,7 @@ class PHPLexer(Lexer):
         return t
     
     def t_BIN_OPS(self,t):
-        r'\+=|-=|\+|-|\*|\/|\*\*|!=|==|!==|>=|<=|>|<|\|\||&&'
+        r'\+=|-=|\+|-|\*|\/|\*\*|!=|!==|===|==|>=|<=|>|<|\|\||&&'
         for checker in self.checkers['BIN_OPS']:
             checker(t)
         t.lexer.lasttok = t.type

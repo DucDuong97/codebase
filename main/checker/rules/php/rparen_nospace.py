@@ -1,6 +1,13 @@
 def rparen_nospace(t):
     violated = False
-    violated = violated or t.lexer.lexdata[t.lexpos-1] == ' '
+    i = 1
+    while True:
+        if t.lexer.lexdata[t.lexpos-i] == ' ':
+            i+=1
+            continue
+        if t.lexer.lexdata[t.lexpos-i] != '\n' and t.lexer.lexdata[t.lexpos-i] != '\t':
+            violated = True
+        break
     if violated:
         print("""
             ------------------------

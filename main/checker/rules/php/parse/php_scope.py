@@ -2,6 +2,9 @@ def php_scope(report, context):
     message = ''
     violated = False
     
+    if len(report['tokens']) == 0:
+        return
+
     if report['tokens'][0] != 'PHP_START':
         violated = True
         message = 'PHP starting tag missing'

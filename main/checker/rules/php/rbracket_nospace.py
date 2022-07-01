@@ -5,7 +5,7 @@ def rbracket_nospace(t):
         if t.lexer.lexdata[t.lexpos-i] == ' ':
             i+=1
             continue
-        if t.lexer.lexdata[t.lexpos-i] != '\n':
+        if t.lexer.lexdata[t.lexpos-i] != '\n' and t.lexer.lexdata[t.lexpos-i] != '\t':
             violated = True
         break
     if violated:
