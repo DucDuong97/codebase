@@ -1,11 +1,10 @@
-def nospace_paren_brace(t):
+def rparen_nospace(t):
     violated = False
-    if t.lexer.lasttok == 'RPAREN':
-        violated = violated or t.lexer.lexdata[t.lexpos-1] != ')'
+    violated = violated or t.lexer.lexdata[t.lexpos-1] == ' '
     if violated:
         print("""
             ------------------------
-            violate: nospace_paren_brace
+            violate: rparen_nospace
             line: {}
             file: {}
         """.format(t.lexer.lineno, t.lexer.context['file']))

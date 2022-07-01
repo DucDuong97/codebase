@@ -5,9 +5,11 @@ class PHPLexer(Lexer):
     def __init__(self):
         # List of token names.   This is always required
         super().__init__('php', {
-            'PAREN_BRACE':[], 'COMMENT':[],'COMMENT_MULTILINE':[],
+            'PAREN_BRACE':[], 'COMMENT':[],'COMMENT_MULTILINE':[], 'STRING':[],
 
             'LPAREN':[],'RPAREN':[],'LBRACE':[],'RBRACE':[],'LBRACKET':[],'RBRACKET':[],
+
+            'UN_OPS':[],'BIN_OPS':[],'ARROW':[],'SEMICOLON':[],'COMMA':[],
 
             'IF':[],'FOR':[],'ELSE':[],'WHILE':[],
 
@@ -28,12 +30,89 @@ class PHPLexer(Lexer):
     
     def t_COMMENT_MULTILINE(self,t):
         r'/\*([\s\S]*?)\*/'
+        t.lexer.lineno += t.value.count('\n')
         return t
     
-    def t_PAREN_BRACE(self,t):
-        r'\)[\s]*\{'
-        for checker in self.checkers['PAREN_BRACE']:
+    def t_STRING(self,t):
+        r'"([\s\S]*?)"'
+        t.lexer.lineno += t.value.count('\n')
+        return t
+    
+    def t_ARROW(self,t):
+        r'->'
+        for checker in self.checkers['ARROW']:
             checker(t)
+        t.lexer.lasttok = t.type
+        return t
+    
+    def t_LPAREN(self,t):
+        r'\('
+        for checker in self.checkers['LPAREN']:
+            checker(t)
+        t.lexer.lasttok = t.type
+        return t
+    
+    def t_RPAREN(self,t):
+        r'\)'
+        for checker in self.checkers['RPAREN']:
+            checker(t)
+        t.lexer.lasttok = t.type
+        return t
+    
+    def t_LBRACE(self,t):
+        r'\['
+        for checker in self.checkers['LBRACE']:
+            checker(t)
+        t.lexer.lasttok = t.type
+        return t
+    
+    def t_RBRACE(self,t):
+        r'\]'
+        for checker in self.checkers['RBRACE']:
+            checker(t)
+        t.lexer.lasttok = t.type
+        return t
+    
+    def t_LBRACKET(self,t):
+        r'\{'
+        for checker in self.checkers['LBRACKET']:
+            checker(t)
+        t.lexer.lasttok = t.type
+        return t
+    
+    def t_RBRACKET(self,t):
+        r'\}'
+        for checker in self.checkers['RBRACKET']:
+            checker(t)
+        t.lexer.lasttok = t.type
+        return t
+    
+    def t_SEMICOLON(self,t):
+        r';'
+        for checker in self.checkers['SEMICOLON']:
+            checker(t)
+        t.lexer.lasttok = t.type
+        return t
+    
+    def t_COMMA(self,t):
+        r','
+        for checker in self.checkers['COMMA']:
+            checker(t)
+        t.lexer.lasttok = t.type
+        return t
+    
+    def t_UN_OPS(self,t):
+        r'\+\+|--|\*\*|!'
+        for checker in self.checkers['UN_OPS']:
+            checker(t)
+        t.lexer.lasttok = t.type
+        return t
+    
+    def t_BIN_OPS(self,t):
+        r'\+|-|\*|/|\*\*|!=|==|!==|>|<|>=|<=|\|\||&&|='
+        for checker in self.checkers['BIN_OPS']:
+            checker(t)
+        t.lexer.lasttok = t.type
         return t
 
     ############ keyword ############
@@ -42,6 +121,7 @@ class PHPLexer(Lexer):
         r'[i|I][f|F]\b'
         for checker in self.checkers['IF']:
             checker(t)
+        t.lexer.lasttok = t.type
         return t
 
     ############ naming ############
@@ -51,6 +131,7 @@ class PHPLexer(Lexer):
         self.report['class_name'].add(t.value.split()[1])
         for checker in self.checkers['CLASS_NAME']:
             checker(t)
+        t.lexer.lasttok = t.type
         return t
 
     def t_VAR_NAME(self,t):
@@ -58,6 +139,7 @@ class PHPLexer(Lexer):
         self.report['var_name'].add(t.value[1:])
         for checker in self.checkers['VAR_NAME']:
             checker(t)
+        t.lexer.lasttok = t.type
         return t
 
     def t_FUNC_NAME(self,t):
@@ -65,6 +147,7 @@ class PHPLexer(Lexer):
         self.report['func_name'].add(t.value.split()[1])
         for checker in self.checkers['FUNC_NAME']:
             checker(t)
+        t.lexer.lasttok = t.type
         return t
 
     def t_CONST_NAME(self,t):
@@ -72,4 +155,5 @@ class PHPLexer(Lexer):
         self.report['const_name'].add(t.value.split()[1])
         for checker in self.checkers['CONST_NAME']:
             checker(t)
+        t.lexer.lasttok = t.type
         return t

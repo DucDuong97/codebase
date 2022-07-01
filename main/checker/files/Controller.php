@@ -10,7 +10,7 @@
 		 * Render view content
 		 * @return string
 		 */
-		protected function renderView($view, $params = []) {
+		protected function renderView($view,$params = [] ) {
 			// Get layout content
 			ob_start();
 			$app = Application::$app;
@@ -63,8 +63,8 @@
 		 */
 		protected function validateCsrfToken($key) {
 			$session = Application::$app->getSession();
-			$csrf_Token = $session->get($key);
-			if  (!empty($_POST[$key])) {
+			$csrf_Token = $session->get($key) ;
+			if  (empty($_POST[$key])) {
 				return $csrf_Token == $_POST[$key];
 			}
 			return false;

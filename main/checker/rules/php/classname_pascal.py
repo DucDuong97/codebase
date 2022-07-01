@@ -11,4 +11,4 @@ def classname_pascal(t):
             violate: classname_pascal
             line: {}
             file: {}
-        """.format(t.lineno, t.lexer.context['file']))
+        """.format(t.lexer.lineno, t.lexer.context['file']))

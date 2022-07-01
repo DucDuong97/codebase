@@ -49,6 +49,10 @@ class Lexer(object):
         # get fule function
         module = __import__('rules.'+self.lang, fromlist=[rule])
         self.checkers[pattern].append(getattr(getattr(module, rule), rule))
+    
+    def addRules(self, pattern, rules=[]):
+        for rule in rules:
+            self.addRule(pattern, rule)
 
 
     # Build the lexer
