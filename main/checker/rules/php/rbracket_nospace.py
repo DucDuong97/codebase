@@ -2,10 +2,11 @@ def rbracket_nospace(t):
     violated = False
     i = 1
     while True:
-        if t.lexer.lexdata[t.lexpos-i] == ' ':
+        char = t.lexer.lexdata[t.lexpos-i]
+        if char == ' ':
             i+=1
             continue
-        if t.lexer.lexdata[t.lexpos-i] != '\n' and t.lexer.lexdata[t.lexpos-i] != '\t':
+        if char != '\n' and char != '\t' and i != 1:
             violated = True
         break
     if violated:

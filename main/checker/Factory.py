@@ -27,7 +27,7 @@ class LexerFactory(object):
         m.addRule('EQ', 'eq_nospace')
         m.addRule('NOT', 'unops_nospace')
         m.addRule('UN_OPS', 'unops_nospace')
-        m.addRule('BIN_OPS', 'binops_nospace')
+        # m.addRule('BIN_OPS', 'binops_nospace')
 
         m.addRule('CLASS_NAME', 'classname_pascal')
         m.addRule('FUNC_NAME', 'funcname_camel')

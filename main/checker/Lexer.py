@@ -123,5 +123,5 @@ class Lexer(object):
 
     def reset(self):
         self.report['total_lines'] += self.lexer.lineno
-        self.lexer.lineno = 0
+        self.lexer.lineno = 1
         self.report['tokens'] = []

@@ -162,6 +162,20 @@ class PHPLexer(Lexer):
         t.lexer.lasttok = t.type
         return t
 
+    def t_FOR(self,t):
+        r'[f|F][o|O][r|R]\b'
+        for checker in self.checkers['FOR']:
+            checker(t)
+        t.lexer.lasttok = t.type
+        return t
+
+    def t_WHILE(self,t):
+        r'[w|W][h|H][i|I][l|L][e|E]\b'
+        for checker in self.checkers['WHILE']:
+            checker(t)
+        t.lexer.lasttok = t.type
+        return t
+
     ############ naming ############
 
     def t_CLASS_NAME(self,t):
