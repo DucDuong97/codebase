@@ -1,0 +1,22 @@
+
+.activity-container .base-block{
+    padding: 10px 0 10px 45px;
+    border-bottom: 1px solid #f1f1f1;
+}
+.activity-container .base-block:hover{
+}
+.activity-container .base-block .-avatar{
+    top: 15px;
+}
+.activity-container .base-block .base-avatar{
+    width: 35px;
+    height: 35px;
+}
+.activity-container .base-block b{
+}
+.activity-container .base-block .symbol-icon{
+    right: 10px;
+    bottom: 10px;
+    left: initial;
+    top: initial;
+}

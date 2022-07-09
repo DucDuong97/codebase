@@ -51,9 +51,20 @@ class Lexer(object):
             print('invalid pattern: ', pattern)
             sys.exit()
         # get fule function
-        module = __import__('rules.'+self.lang, fromlist=[rule])
-        self.checkers[pattern].append(getattr(getattr(module, rule), rule))
+        try:
+            module = __import__('rules.'+self.lang, fromlist=[rule])
+            attr = getattr(getattr(module, rule), rule)
+        except:
+            try:
+                module = __import__('rules.common', fromlist=[rule])
+                attr = getattr(getattr(module, rule), rule)
+            except:
+                print('invalid rule: ', rule)
+                sys.exit()
+        
+        self.checkers[pattern].append(attr)
     
+
     def addRules(self, pattern, rules=[]):
         for rule in rules:
             self.addRule(pattern, rule)
@@ -65,9 +76,12 @@ class Lexer(object):
 
 
     # Build the lexer
-    def build(self,**kwargs):
+    def build(self, module=None, **kwargs):
         self.tokens = tuple(self.checkers)
-        self.lexer = lex.lex(module=self, **kwargs)
+        if module == None:
+            self.lexer = lex.lex(module=self, **kwargs)
+        else:
+            self.lexer = lex.lex(module=module, **kwargs)
 
 
     def context(self, context):
@@ -79,12 +93,20 @@ class Lexer(object):
 
 
     # Test it output
-    def test(self,data):
+    def check(self,data):
         self.lexer.input(data)
+        self.lexer.lasttok = None
         while True:
             tok = self.lexer.token()
-            if not tok: 
+            if not tok:
                 break
+            print(tok.type, tok.value)
+            if tok.type not in self.checkers:
+                continue
+            for checker in self.checkers[tok.type]:
+                tok.lexer = self.lexer
+                checker(tok)
+            self.lexer.lasttok = tok.type
             self.report['tokens'].append(tok.type)
         
         for checker in self.parse_rules:
@@ -93,7 +115,7 @@ class Lexer(object):
 
 
     # Test it output
-    def testFile(self, file_name=None):
+    def checkFile(self, file_name=None):
         if file_name is None:
             if self.lexer.context is None:
                 return
@@ -103,18 +125,18 @@ class Lexer(object):
         
         with open(file_name) as f:
             content = f.read()
-            self.test(content)
+            self.check(content)
 
 
     # Test it output
-    def testTempFiles(self):
+    def checkTempFiles(self):
         shutil.copytree(self.lexer.context['code_dir'], self.TEMP_DIR)
         
         try:
             # the code that may cause an exception
             result = list(Path(self.TEMP_DIR).rglob("*."+self.lang))
             for file_name in result:
-                self.testFile(file_name)
+                self.checkFile(file_name)
                 self.reset()
         finally:
             # the code that always executes

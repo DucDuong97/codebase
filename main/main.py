@@ -7,6 +7,7 @@ from pathlib import Path
 
 root_dir = Path(__file__).parent
 sys.path.insert(1, os.path.join(root_dir,'checker'))
+sys.path.insert(1, os.path.join(root_dir,'checker', 'jslexer'))
 
 from Factory import LexerFactory
 
@@ -31,9 +32,9 @@ print('REPORT')
 print('***********')
 print('total lines:', lexer.report['total_lines'])
 print('Execution time:', exec_time, 'seconds')
-print('class names:', lexer.report['class_name'])
-print()
-print('function names:', lexer.report['func_name'])
-print()
-print('variable names:', lexer.report['var_name'])
-print()
+# print('class names:', lexer.report['class_name'])
+# print()
+# print('function names:', lexer.report['func_name'])
+# print()
+# print('variable names:', lexer.report['var_name'])
+# print()

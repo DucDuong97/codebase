@@ -1,6 +1,8 @@
 
 
 from PHPLexer import PHPLexer
+from JSLexer import JSLexer
+from CSSLexer import CSSLexer
 
 class LexerFactory(object):
     def __init__(self):
@@ -41,4 +43,18 @@ class LexerFactory(object):
 
         m.build()
 
+        return m
+
+
+    def buildJSLexer(self):
+        m = JSLexer()
+        m.addRules('LBRACE', ['nospace_paren_brace'])
+        m.build()
+        return m
+
+
+
+    def buildCSSLexer(self):
+        m = CSSLexer()
+        m.build()
         return m
