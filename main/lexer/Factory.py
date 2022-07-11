@@ -1,24 +1,26 @@
 
 
-from PHPLexer import PHPLexer
-from JSLexer import JSLexer
-from CSSLexer import CSSLexer
+from PHPLexerBuilder import PHPLexerBuilder
+from JSLexerBuilder import JSLexerBuilder
+from CSSLexerBuilder import CSSLexerBuilder
 
 class LexerFactory(object):
     def __init__(self):
         pass
 
-    def getLexer(self, lang):
+    @staticmethod
+    def getLexer(lang):
         if lang == 'php':
-            return self.buildPHPLexer()
+            return LexerFactory.buildPHPLexer()
         if lang == 'js':
-            return self.buildJSLexer()
+            return LexerFactory.buildJSLexer()
         if lang == 'css':
-            return self.buildCSSLexer()
+            return LexerFactory.buildCSSLexer()
         return False
 
-    def buildPHPLexer(self):
-        m = PHPLexer()
+    @staticmethod
+    def buildPHPLexer():
+        m = PHPLexerBuilder()
 
         m.addRule('LPAREN', 'lparen_nospace')
         m.addRule('RPAREN', 'rparen_nospace')
@@ -41,20 +43,20 @@ class LexerFactory(object):
 
         m.addParseRules(['php_scope'])
 
-        m.build()
-
-        return m
+        return m.build()
 
 
-    def buildJSLexer(self):
-        m = JSLexer()
+    @staticmethod
+    def buildJSLexer():
+        m = JSLexerBuilder()
+
         m.addRules('LBRACE', ['nospace_paren_brace'])
-        m.build()
-        return m
+        
+        return m.build()
 
 
+    @staticmethod
+    def buildCSSLexer():
+        m = CSSLexerBuilder()
 
-    def buildCSSLexer(self):
-        m = CSSLexer()
-        m.build()
-        return m
+        return m.build()

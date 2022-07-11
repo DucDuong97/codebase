@@ -4,11 +4,9 @@ import sys
 from pathlib import Path
 
 from Lexer import Lexer
-root_dir = Path(__file__).parent
-sys.path.insert(1, os.path.join(root_dir,'csslexer'))
-import csslexer.csslexer
+import csslexer.csslexer as csslexer
 
-class CSSLexer(Lexer):
+class CSSLexerBuilder(Lexer):
     
     def __init__(self):
         # List of token names.   This is always required
@@ -16,7 +14,7 @@ class CSSLexer(Lexer):
 
 
     def build(self):
-        super().build(csslexer())
+        super().build(csslexer.csslexer())
 
 
 if '__main__' == __name__:

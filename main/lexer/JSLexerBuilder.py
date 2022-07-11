@@ -5,9 +5,9 @@ from pathlib import Path
 from Lexer import Lexer
 root_dir = Path(__file__).parent
 sys.path.insert(1, os.path.join(root_dir,'jslexer'))
-import jslexer.jslexer
+import jslexer
 
-class JSLexer(Lexer):
+class JSLexerBuilder(Lexer):
     
     def __init__(self):
         # List of token names.   This is always required
