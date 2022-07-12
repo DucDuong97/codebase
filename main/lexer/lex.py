@@ -882,7 +882,7 @@ def runmain(lexer=None, data=None):
         tok = _token()
         if not tok:
             break
-        # sys.stdout.write(f'({tok.type},{tok.value!r},{tok.lineno},{tok.lexpos})\n')
+        sys.stdout.write(f'({tok.type},{tok.value!r},{tok.lineno},{tok.lexpos})\n')
 
 # -----------------------------------------------------------------------------
 # @TOKEN(regex)

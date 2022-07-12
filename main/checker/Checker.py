@@ -5,9 +5,13 @@ from pathlib import Path
 import shutil
 
 root_dir = Path(__file__).parent.parent
-sys.path.insert(1, os.path.join(root_dir,'lexer'))
-import lex
-from Factory import LexerFactory
+sys.path.insert(1, os.path.join(root_dir))
+sys.path.insert(1, os.path.join(root_dir, 'lexer'))
+sys.path.insert(1, os.path.join(root_dir, 'parserr'))
+
+import lexer.lex as lex
+from lexer.Factory import LexerFactory
+from parserr.Factory import ParserFactory
 
 class Checker(object):
 
@@ -15,6 +19,7 @@ class Checker(object):
 
     def __init__(self, lang, report={}):
         self.lexer = LexerFactory.getLexer(lang)
+        self.parser = ParserFactory.buildPHPParser(self.lexer)
         self.lang = lang
         
         self.report = report | {
@@ -31,7 +36,7 @@ class Checker(object):
 
     # Test it output
     def check(self,data):
-        lex.runmain(self.lexer, data)
+        print(self.parser.parse(data, lexer=self.lexer))
         
     # Test it output
     def checkFile(self, file_name=None):

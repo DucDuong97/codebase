@@ -1,0 +1,208 @@
+[
+    Namespace("app\\core", []),
+    Class(
+        "Controller",
+        None,
+        None,
+        [],
+        [],
+        [
+            ClassConstants([ClassConstant("CSRF_TOKEN_LENGTH", 32)]),
+            Method("__construct", [], [], [], False),
+            Method(
+                "renderView",
+                ["protected"],
+                [
+                    FormalParameter("$view", None, False, None),
+                    FormalParameter("$params", Array([]), False, None),
+                ],
+                [
+                    FunctionCall("ob_start", []),
+                    Assignment(
+                        Variable("$app"),
+                        StaticProperty("Application", Variable("$app")),
+                        False,
+                    ),
+                    Include(
+                        BinaryOp(
+                            ".",
+                            StaticProperty("Application", Variable("$ROOT_DIR")),
+                            "/views/_layout.php",
+                        ),
+                        True,
+                    ),
+                    Assignment(
+                        Variable("$layout_content"),
+                        FunctionCall("ob_get_clean", []),
+                        False,
+                    ),
+                    Foreach(
+                        Variable("$params"),
+                        Variable("$key"),
+                        ForeachVariable(Variable("$value"), False),
+                        Block(
+                            [
+                                Assignment(
+                                    Variable(Variable("$key")),
+                                    Variable("$value"),
+                                    False,
+                                )
+                            ]
+                        ),
+                    ),
+                    FunctionCall("ob_start", []),
+                    Include(
+                        BinaryOp(
+                            ".",
+                            StaticProperty("Application", Variable("$ROOT_DIR")),
+                            BinaryOp(
+                                ".", BinaryOp(".", "/views/", Variable("$view")), ".php"
+                            ),
+                        ),
+                        True,
+                    ),
+                    Assignment(
+                        Variable("$view_content"),
+                        FunctionCall("ob_get_clean", []),
+                        False,
+                    ),
+                    Assignment(
+                        Variable("$content"),
+                        FunctionCall(
+                            "str_replace",
+                            [
+                                Parameter("{{content}}", False),
+                                Parameter(Variable("$view_content"), False),
+                                Parameter(Variable("$layout_content"), False),
+                            ],
+                        ),
+                        False,
+                    ),
+                    Return(Variable("$content")),
+                ],
+                False,
+            ),
+            Method(
+                "generateCsrfToken",
+                ["protected"],
+                [FormalParameter("$key", None, False, None)],
+                [
+                    Assignment(
+                        Variable("$session"),
+                        MethodCall(
+                            StaticProperty("Application", Variable("$app")),
+                            "getSession",
+                            [],
+                        ),
+                        False,
+                    ),
+                    Assignment(
+                        Variable("$token"),
+                        FunctionCall(
+                            "bin2hex",
+                            [
+                                Parameter(
+                                    FunctionCall(
+                                        "random_bytes",
+                                        [
+                                            Parameter(
+                                                StaticProperty(
+                                                    "static", "CSRF_TOKEN_LENGTH"
+                                                ),
+                                                False,
+                                            )
+                                        ],
+                                    ),
+                                    False,
+                                )
+                            ],
+                        ),
+                        False,
+                    ),
+                    MethodCall(
+                        Variable("$session"),
+                        "set",
+                        [
+                            Parameter(Variable("$key"), False),
+                            Parameter(Variable("$token"), False),
+                        ],
+                    ),
+                    Return(Variable("$token")),
+                ],
+                False,
+            ),
+            Method(
+                "getCsrfToken",
+                ["protected"],
+                [FormalParameter("$key", None, False, None)],
+                [
+                    Assignment(
+                        Variable("$session"),
+                        MethodCall(
+                            StaticProperty("Application", Variable("$app")),
+                            "getSession",
+                            [],
+                        ),
+                        False,
+                    ),
+                    Assignment(
+                        Variable("$token"),
+                        MethodCall(
+                            Variable("$session"),
+                            "get",
+                            [Parameter(Variable("$key"), False)],
+                        ),
+                        False,
+                    ),
+                    Return(Variable("$token")),
+                ],
+                False,
+            ),
+            Method(
+                "validateCsrfToken",
+                ["protected"],
+                [FormalParameter("$key", None, False, None)],
+                [
+                    Assignment(
+                        Variable("$session"),
+                        MethodCall(
+                            StaticProperty("Application", Variable("$app")),
+                            "getSession",
+                            [],
+                        ),
+                        False,
+                    ),
+                    Assignment(
+                        Variable("$csrf_Token"),
+                        MethodCall(
+                            Variable("$session"),
+                            "get",
+                            [Parameter(Variable("$key"), False)],
+                        ),
+                        False,
+                    ),
+                    If(
+                        Empty(ArrayOffset(Variable("$_POST"), Variable("$key"))),
+                        Block(
+                            [
+                                Return(
+                                    BinaryOp(
+                                        "==",
+                                        Variable("$csrf_Token"),
+                                        ArrayOffset(
+                                            Variable("$_POST"), Variable("$key")
+                                        ),
+                                    )
+                                )
+                            ]
+                        ),
+                        [],
+                        None,
+                    ),
+                    Return(Constant("false")),
+                ],
+                False,
+            ),
+        ],
+    ),
+]

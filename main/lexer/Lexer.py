@@ -1,15 +1,10 @@
 
-import os
 import sys
-from pathlib import Path
-import shutil
 import types
 
 import lex
 
 class Lexer(object):
-
-    TEMP_DIR = os.path.join(Path(__file__).parent,'files','temp')
 
     def __init__(self, lang, checkers={}, report={}):
         self.lang = lang
@@ -37,7 +32,6 @@ class Lexer(object):
         if pattern not in self.checkers:
             print('invalid pattern: ', pattern)
             sys.exit()
-        # get fule function
         try:
             module = __import__('rules.'+self.lang, fromlist=[rule])
             attr = getattr(getattr(module, rule), rule)
@@ -74,6 +68,7 @@ class Lexer(object):
 
         def newToken(inner_self):
             tok = oldToken()
+            # print(tok.type)
             if not tok:
                 return None
             if tok.type not in inner_self.checkers:

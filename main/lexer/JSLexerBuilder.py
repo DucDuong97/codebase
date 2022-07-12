@@ -13,7 +13,6 @@ class JSLexerBuilder(Lexer):
         # List of token names.   This is always required
         super().__init__('js', dict.fromkeys(jslexer.jslexer.tokens, []))
 
-
     def build(self):
         super().build(jslexer.jslexer)
 
