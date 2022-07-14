@@ -4,28 +4,17 @@ import types
 
 import lex
 
-class Lexer(object):
+class LexerBuilder(object):
 
-    def __init__(self, lang, checkers={}, report={}):
+    def __init__(self, lang, checkers={}, context={}, report={}):
         self.lang = lang
         # List of token names.   This is always required
         self.checkers = checkers | {}
+        self.context = context
         self.report = report | {
             'tokens':[],
             'total_lines':0,
         }
-        self.parse_rules = []
-
-
-    # Define a rule so we can track line numbers
-    def t_newline(self,t):
-        r'\n+'
-        t.lexer.lineno += len(t.value)
-
-    # Error handling rule
-    def t_error(self,t):
-        t.lexer.skip(1)
-
 
     # rule: token, callback
     def addRule(self, pattern, rule):
@@ -49,16 +38,12 @@ class Lexer(object):
     def addRules(self, pattern, rules=[]):
         for rule in rules:
             self.addRule(pattern, rule)
-    
-    def addParseRules(self, rules=[]):
-        for rule in rules:
-            module = __import__('rules.'+self.lang+'.parse', fromlist=[rule])
-            self.parse_rules.append(getattr(getattr(module, rule), rule))
 
+    def setContext(self, context):
+        self.context = context
 
     # Build the lexer
     def build(self, module=None, **kwargs):
-        self.tokens = tuple(self.checkers)
         if module == None:
             self.lexer = lex.lex(module=self, **kwargs)
         else:
@@ -66,21 +51,34 @@ class Lexer(object):
 
         oldToken = self.lexer.token
 
+        def violationHandler(t, result={}):
+            print("""
+                ------------------------
+                violate: {}
+                line: {}
+                file: {}
+            """.format(result['name'], t.lexer.lineno, t.lexer.context['file']))
+
         def newToken(inner_self):
             tok = oldToken()
-            # print(tok.type)
             if not tok:
                 return None
-            if tok.type not in inner_self.checkers:
+            if tok.type not in self.checkers:
                 return tok
-            for checker in inner_self.checkers[tok.type]:
+            for checker in self.checkers[tok.type]:
+                # print('type', tok.type, 'checker', checker)
                 tok.lexer = inner_self
-                checker(tok)
+                result = checker(tok)
+                if result['violated']:
+                    result['name'] = checker.__name__
+                    violationHandler(tok, result=result)
             inner_self.lasttok = tok.type
             return tok
 
         # replace bark with new_bark for this object only
         self.lexer.token = types.MethodType(newToken, self.lexer)
-        self.lexer.checkers = self.checkers
+
         self.lexer.lasttok = None
+        self.lexer.context = self.context
+        
         return self.lexer

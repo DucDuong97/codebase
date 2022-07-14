@@ -17,26 +17,29 @@ class Checker(object):
 
     TEMP_DIR = os.path.join(Path(__file__).parent,'files','temp')
 
-    def __init__(self, lang, report={}):
-        self.lexer = LexerFactory.getLexer(lang)
-        self.parser = ParserFactory.buildPHPParser(self.lexer)
+    def __init__(self, lang, level='parse', context={}, report={}):
         self.lang = lang
+        self.level = level
+        self.context = context
+
+        self.lexer = LexerFactory.getLexer(lang, context)
+        if level == 'parse':
+            self.parser = ParserFactory.getParser(lang, context)
         
         self.report = report | {
             'tokens':[],
             'total_lines':0,
         }
 
-    def setContext(self, context):
-        self.context = context
-
-
     def getReport(self):
         return self.report
 
     # Test it output
     def check(self,data):
-        print(self.parser.parse(data, lexer=self.lexer))
+        if self.level == 'lex':
+            lex.runmain(self.lexer, data)
+            return
+        self.parser.parse(data, lexer=self.lexer)
         
     # Test it output
     def checkFile(self, file_name=None):

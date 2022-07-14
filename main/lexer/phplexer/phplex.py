@@ -523,7 +523,6 @@ class FilteredLexer(object):
         return self.lexer.token()
 
     def token(self):
-        print('hier')
         t = self.next_lexer_token()
 
         # Filter out tokens that the parser is not expecting.

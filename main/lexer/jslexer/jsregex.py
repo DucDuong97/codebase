@@ -1,4 +1,4 @@
-from jsidentifiers import identifier_part_re
+from .jsidentifiers import identifier_part_re
 from lex import TOKEN
 
 """

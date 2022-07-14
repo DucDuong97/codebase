@@ -4,10 +4,6 @@ def keyword_lower_onespace(t):
     violated = violated or any(c.isupper() for c in keyword)
     violated = violated or t.lexer.lexdata[t.lexpos+len(keyword)] != ' '
     violated = violated or t.lexer.lexdata[t.lexpos+len(keyword)+1] == ' '
-    if violated:
-        print("""
-            ------------------------
-            violate: keyword_lower_onespace
-            line: {} pos: {}
-            file: {}
-        """.format(t.lineno, t.value, t.lexer.context['file']))
+    result = {}
+    result['violated'] = violated
+    return result

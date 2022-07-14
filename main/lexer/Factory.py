@@ -1,62 +1,59 @@
 
 
-from PHPLexerBuilder import PHPLexerBuilder
-from JSLexerBuilder import JSLexerBuilder
-from CSSLexerBuilder import CSSLexerBuilder
+from .phplexer.PHPLexerBuilder import PHPLexerBuilder
+from .jslexer.JSLexerBuilder import JSLexerBuilder
+from .csslexer.CSSLexerBuilder import CSSLexerBuilder
 
 class LexerFactory(object):
     def __init__(self):
         pass
 
     @staticmethod
-    def getLexer(lang):
+    def getLexer(lang, context):
         if lang == 'php':
-            return LexerFactory.buildPHPLexer()
+            return LexerFactory.buildPHPLexer(context)
         if lang == 'js':
-            return LexerFactory.buildJSLexer()
+            return LexerFactory.buildJSLexer(context)
         if lang == 'css':
-            return LexerFactory.buildCSSLexer()
+            return LexerFactory.buildCSSLexer(context)
         return False
 
     @staticmethod
-    def buildPHPLexer():
+    def buildPHPLexer(context):
         m = PHPLexerBuilder()
 
-        # m.addRule('LPAREN', 'lparen_nospace')
-        # m.addRule('RPAREN', 'rparen_nospace')
-        # m.addRules('LBRACKET', ['lbracket_nospace', 'nospace_paren_brace'])
-        # m.addRule('RBRACKET', 'rbracket_nospace')
-        # m.addRule('SEMICOLON', 'semicolon_nospace')
-        # m.addRule('COMMA', 'comma_space')
-        # m.addRule('EQ', 'eq_nospace')
-        # m.addRule('NOT', 'unops_nospace')
-        # m.addRule('UN_OPS', 'unops_nospace')
-        # # m.addRule('BIN_OPS', 'binops_nospace')
+        m.setContext(context)
 
-        # m.addRule('CLASS_NAME', 'classname_pascal')
-        # m.addRule('FUNC_NAME', 'funcname_camel')
-        # m.addRule('VAR_NAME', 'varname_snake')
+        m.addRule('LPAREN', 'lparen_nospace')
+        m.addRule('RPAREN', 'rparen_nospace')
+        m.addRules('LBRACE', ['lbracket_nospace', 'nospace_paren_brace'])
+        m.addRule('RBRACE', 'rbracket_nospace')
+        m.addRule('SEMI', 'semicolon_nospace')
+        m.addRule('COMMA', 'comma_space')
+        m.addRule('EQUALS', 'eq_nospace')
+        m.addRule('BOOLEAN_NOT', 'unops_nospace')
 
-        # m.addRule('IF', 'keyword_lower_onespace')
-        # m.addRule('FOR', 'keyword_lower_onespace')
-        # m.addRule('WHILE', 'keyword_lower_onespace')
-
-        # m.addParseRules(['php_scope'])
+        m.addRule('IF', 'keyword_lower_onespace')
+        m.addRule('FOR', 'keyword_lower_onespace')
+        m.addRule('WHILE', 'keyword_lower_onespace')
+        
 
         return m.build()
 
 
     @staticmethod
-    def buildJSLexer():
+    def buildJSLexer(context):
         m = JSLexerBuilder()
 
-        m.addRules('LBRACE', ['nospace_paren_brace'])
-        
+        m.setContext(context)
+
         return m.build()
 
 
     @staticmethod
-    def buildCSSLexer():
+    def buildCSSLexer(context):
         m = CSSLexerBuilder()
+
+        m.setContext(context)
 
         return m.build()

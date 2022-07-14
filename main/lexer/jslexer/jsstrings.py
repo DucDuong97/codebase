@@ -1,4 +1,4 @@
-from jsnumbers import hex_digit_re
+from .jsnumbers import hex_digit_re
 from lex import TOKEN
 
 """

@@ -9,10 +9,6 @@ def rbracket_nospace(t):
         if char != '\n' and char != '\t' and i != 1:
             violated = True
         break
-    if violated:
-        print("""
-            ------------------------
-            violate: rbracket_nospace
-            line: {}
-            file: {}
-        """.format(t.lexer.lineno, t.lexer.context['file']))
+    result = {}
+    result['violated'] = violated
+    return result

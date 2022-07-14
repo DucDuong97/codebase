@@ -179,3 +179,12 @@ def resolve_magic_constants(nodes):
     for node in nodes:
         if isinstance(node, Node):
             node.accept(visitor)
+
+
+def traverse(nodes, checkers):
+    def visitor(node):
+        for checker in checkers[type(node).__name__]:
+            checker(node)
+    for node in nodes:
+        if isinstance(node, Node):
+            node.accept(visitor)

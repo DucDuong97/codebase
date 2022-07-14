@@ -14,7 +14,7 @@
 		 * Render view content
 		 * @return string
 		 */
-		protected function renderView($view,$params = [] ) {
+		protected function renderView($view, $params = []){
 			// Get layout content
 			ob_start();
 			$app = Application::$app;
@@ -22,7 +22,7 @@
 			$layout_content = ob_get_clean();
 
 			// Get view content
-			foreach ($params as $key => $value) {
+			foreach ($params as $key => $value){
 				$$key = $value;
 			}
 			ob_start();
