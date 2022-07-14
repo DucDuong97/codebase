@@ -30,16 +30,39 @@ class ParserBuilder(object):
         self.checkers[pattern].append(attr)
     
 
+    def setContext(self, context):
+        self.context = context
+    
+
     # Build the lexer
-    def build(self, module, ast_module, **kwargs):
+    def build(self, module, **kwargs):
 
         self.parser = yacc.yacc(module=module)
 
         oldParse = self.parser.parse
 
+        def violationHandler(node, result={}):
+            print("""
+                ------------------------
+                violate: {}
+                line: {}
+                file: {}
+            """.format(result['name'], node.lineno, self.context['file']))
+
+
         def newParse(ignored, input=None, lexer=None, debug=False, tracking=False):
             ast = oldParse(input, lexer, debug, tracking)
-            ast_module.traverse(ast, self.checkers)
+
+            def traverse(nodes, checkers):
+                def visitor(node):
+                    for checker in checkers[type(node).__name__]:
+                        result = checker(node)
+                        result['name'] = checker.__name__
+                        violationHandler(node, result=result)
+                for node in nodes:
+                    node.accept(visitor)
+
+            traverse(ast, self.checkers)
             return ast
 
         # replace bark with new_bark for this object only

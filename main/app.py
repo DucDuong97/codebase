@@ -4,7 +4,7 @@ from checker.Checker import Checker
 
 
 # need to find a JS PLY
-m = Checker('php', level='lex', context={'file':'../files/test.php'})
+m = Checker('php', level='parse', context={'file':'../files/test.php'})
 
 start_time = time.time()
 m.checkFile()

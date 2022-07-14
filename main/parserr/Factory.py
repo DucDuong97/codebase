@@ -19,13 +19,27 @@ class ParserFactory(object):
     @staticmethod
     def buildPHPParser(context):
         m = PHPParserBuilder()
+
+        m.setContext(context)
+
+        m.addRule('Class', 'classname_pascal')
+
         return m.build()
+
 
     @staticmethod
     def buildJSParser(context):
         m = JSParserBuilder()
+
+        m.setContext(context)
+
         return m.build()
+
 
     @staticmethod
     def buildCSSParser(context):
-        return None
+        m = JSParserBuilder()
+
+        m.setContext(context)
+
+        return m.build()

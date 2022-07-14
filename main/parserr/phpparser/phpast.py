@@ -1,3 +1,6 @@
+
+import sys, inspect
+
 # ----------------------------------------------------------------------
 # phpast.py
 #
@@ -180,11 +183,6 @@ def resolve_magic_constants(nodes):
         if isinstance(node, Node):
             node.accept(visitor)
 
-
-def traverse(nodes, checkers):
-    def visitor(node):
-        for checker in checkers[type(node).__name__]:
-            checker(node)
-    for node in nodes:
-        if isinstance(node, Node):
-            node.accept(visitor)
+def getNodeList():
+    clsmembers = inspect.getmembers(sys.modules[__name__], inspect.isclass)
+    return [i[0] for i in clsmembers]

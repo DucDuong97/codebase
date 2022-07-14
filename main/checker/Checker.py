@@ -34,15 +34,28 @@ class Checker(object):
     def getReport(self):
         return self.report
 
-    # Test it output
+    
     def check(self,data):
+        """
+        If the level is lex, run the lexer on the data, otherwise run the parser on the data
+        
+        :param data: the string to be parsed
+        :return: The parse tree.
+        """
         if self.level == 'lex':
             lex.runmain(self.lexer, data)
             return
         self.parser.parse(data, lexer=self.lexer)
         
-    # Test it output
+    
     def checkFile(self, file_name=None):
+        """
+        It opens a file, reads the contents, and then passes the contents to the check function
+        
+        :param file_name: the name of the file to be checked
+        :return: The return value is a list of dictionaries. Each dictionary contains the following
+        keys:
+        """
         if file_name is None:
             if self.context is None:
                 return
