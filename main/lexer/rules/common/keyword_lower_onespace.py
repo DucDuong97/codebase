@@ -1,4 +1,4 @@
-def keyword_lower_onespace(t):
+def keyword_lower_onespace(t, context, report):
     violated = False
     keyword = t.value.split()[0]
     violated = violated or any(c.isupper() for c in keyword)

@@ -1,14 +1,11 @@
 import re
 
-def funcname_camel(t):
+def funcname_camel(node, context, report):
     violated = False
-    func_name = t.value.split()[1]
+    func_name = node.name
     violated = violated or not re.compile("(^(__[a-z]|[a-z]))[a-zA-Z0-9]*").match(func_name)
-    if violated:
-        print("""
-            ------------------------
-            violate: funcname_camel
-            line: {}
-            file: {}
-            message: {}
-        """.format(t.lineno, t.lexer.context['file'], func_name))
+
+    report['func_name'].append(func_name)
+    result = {}
+    result['violated'] = violated
+    return result

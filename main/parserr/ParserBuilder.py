@@ -5,10 +5,11 @@ import yacc
 
 class ParserBuilder(object):
 
-    def __init__(self, lang, checkers={}):
+    def __init__(self, lang, checkers={}, report={}):
         self.lang = lang
         # List of token names.   This is always required
-        self.checkers = checkers | {}
+        self.checkers = checkers
+        self.report = report
         pass
     
     # rule: token, callback
@@ -28,13 +29,18 @@ class ParserBuilder(object):
                 sys.exit()
         
         self.checkers[pattern].append(attr)
-    
+
+
+    def addRuleOnGroup(self, group, rule):
+        for pattern in group:
+            self.addRule(pattern, rule)
+
 
     def setContext(self, context):
         self.context = context
     
 
-    # Build the lexer
+    # Build the parser
     def build(self, module, **kwargs):
 
         self.parser = yacc.yacc(module=module)
@@ -42,12 +48,16 @@ class ParserBuilder(object):
         oldParse = self.parser.parse
 
         def violationHandler(node, result={}):
+            message = ''
+            if 'message' in result:
+                message = result['message']
             print("""
                 ------------------------
                 violate: {}
+                message: {}
                 line: {}
                 file: {}
-            """.format(result['name'], node.lineno, self.context['file']))
+            """.format(result['name'], message, node.lineno, self.context['file']))
 
 
         def newParse(ignored, input=None, lexer=None, debug=False, tracking=False):
@@ -56,14 +66,15 @@ class ParserBuilder(object):
             def traverse(nodes, checkers):
                 def visitor(node):
                     for checker in checkers[type(node).__name__]:
-                        result = checker(node)
+                        result = checker(node, self.context, self.report)
                         result['name'] = checker.__name__
-                        violationHandler(node, result=result)
+                        if result['violated']:
+                            violationHandler(node, result=result)
                 for node in nodes:
                     node.accept(visitor)
 
             traverse(ast, self.checkers)
-            return ast
+            return [ast, self.report]
 
         # replace bark with new_bark for this object only
         self.parser.parse = types.MethodType(newParse, self.parser)

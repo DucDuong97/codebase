@@ -1,4 +1,4 @@
-def rbracket_nospace(t):
+def rbracket_nospace(t, context, report):
     violated = False
     i = 1
     while True:

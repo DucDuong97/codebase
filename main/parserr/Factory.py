@@ -7,7 +7,7 @@ class ParserFactory(object):
         pass
 
     @staticmethod
-    def getParser(lang, context):
+    def getParser(lang, context={}):
         if lang == 'php':
             return ParserFactory.buildPHPParser(context)
         if lang == 'js':
@@ -23,6 +23,10 @@ class ParserFactory(object):
         m.setContext(context)
 
         m.addRule('Class', 'classname_pascal')
+        m.addRule('Method', 'funcname_camel')
+
+        variable_group = ['Variable', 'FormalParameter']
+        m.addRuleOnGroup(variable_group, 'varname_snake')
 
         return m.build()
 
@@ -37,9 +41,10 @@ class ParserFactory(object):
 
 
     @staticmethod
-    def buildCSSParser(context):
+    def buildCSSParser(context, report):
         m = JSParserBuilder()
 
         m.setContext(context)
+        m.setReport(report)
 
         return m.build()

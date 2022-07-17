@@ -1,4 +1,4 @@
-def rparen_nospace(t):
+def rparen_nospace(t, context, report):
     violated = False
     i = 1
     while True:

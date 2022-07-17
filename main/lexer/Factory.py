@@ -9,20 +9,21 @@ class LexerFactory(object):
         pass
 
     @staticmethod
-    def getLexer(lang, context):
+    def getLexer(lang, context={}, report={}):
         if lang == 'php':
-            return LexerFactory.buildPHPLexer(context)
+            return LexerFactory.buildPHPLexer(context, report)
         if lang == 'js':
-            return LexerFactory.buildJSLexer(context)
+            return LexerFactory.buildJSLexer(context, report)
         if lang == 'css':
-            return LexerFactory.buildCSSLexer(context)
+            return LexerFactory.buildCSSLexer(context, report)
         return False
 
     @staticmethod
-    def buildPHPLexer(context):
+    def buildPHPLexer(context, report):
         m = PHPLexerBuilder()
 
         m.setContext(context)
+        m.setReport(report)
 
         m.addRule('LPAREN', 'lparen_nospace')
         m.addRule('RPAREN', 'rparen_nospace')
@@ -42,18 +43,20 @@ class LexerFactory(object):
 
 
     @staticmethod
-    def buildJSLexer(context):
+    def buildJSLexer(context, report):
         m = JSLexerBuilder()
 
         m.setContext(context)
+        m.setReport(report)
 
         return m.build()
 
 
     @staticmethod
-    def buildCSSLexer(context):
+    def buildCSSLexer(context, report):
         m = CSSLexerBuilder()
 
         m.setContext(context)
+        m.setReport(report)
 
         return m.build()

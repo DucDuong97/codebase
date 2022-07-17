@@ -6,15 +6,11 @@ import lex
 
 class LexerBuilder(object):
 
-    def __init__(self, lang, checkers={}, context={}, report={}):
+    def __init__(self, lang, checkers={}, report={}):
         self.lang = lang
         # List of token names.   This is always required
         self.checkers = checkers | {}
-        self.context = context
-        self.report = report | {
-            'tokens':[],
-            'total_lines':0,
-        }
+        self.report = report
 
     # rule: token, callback
     def addRule(self, pattern, rule):
@@ -42,6 +38,9 @@ class LexerBuilder(object):
     def setContext(self, context):
         self.context = context
 
+    def setReport(self, report):
+        self.report = self.report | report
+
     # Build the lexer
     def build(self, module=None, **kwargs):
         if module == None:
@@ -68,7 +67,7 @@ class LexerBuilder(object):
             for checker in self.checkers[tok.type]:
                 # print('type', tok.type, 'checker', checker)
                 tok.lexer = inner_self
-                result = checker(tok)
+                result = checker(tok, self.context, self.report)
                 if result['violated']:
                     result['name'] = checker.__name__
                     violationHandler(tok, result=result)

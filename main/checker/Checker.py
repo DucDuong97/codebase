@@ -17,17 +17,16 @@ class Checker(object):
 
     TEMP_DIR = os.path.join(Path(__file__).parent,'files','temp')
 
-    def __init__(self, lang, level='parse', context={}, report={}):
-        self.lang = lang
+    def __init__(self, context={}, level='parse', report={}):
+        self.lang = context['lang']
         self.level = level
         self.context = context
 
-        self.lexer = LexerFactory.getLexer(lang, context)
+        self.lexer = LexerFactory.getLexer(self.lang, context, report)
         if level == 'parse':
-            self.parser = ParserFactory.getParser(lang, context)
+            self.parser = ParserFactory.getParser(self.lang, context)
         
         self.report = report | {
-            'tokens':[],
             'total_lines':0,
         }
 
@@ -45,7 +44,9 @@ class Checker(object):
         if self.level == 'lex':
             lex.runmain(self.lexer, data)
             return
-        self.parser.parse(data, lexer=self.lexer)
+        [ast, report] = self.parser.parse(data, lexer=self.lexer)
+        self.report.update(report)
+        self.report['total_lines'] = self.lexer.lineno
         
     
     def checkFile(self, file_name=None):

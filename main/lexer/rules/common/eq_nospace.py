@@ -1,4 +1,4 @@
-def eq_nospace(t):
+def eq_nospace(t, context, report):
     violated = False
     violated = violated or t.lexer.lexdata[t.lexpos-1] != ' '
     violated = violated or t.lexer.lexdata[t.lexpos+len(t.value)] != ' '

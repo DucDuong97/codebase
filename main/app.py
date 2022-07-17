@@ -4,7 +4,13 @@ from checker.Checker import Checker
 
 
 # need to find a JS PLY
-m = Checker('php', level='parse', context={'file':'../files/test.php'})
+context={
+    'file':'../files/test.php',
+    'lang':'php',
+    'type': 'dev',
+}
+
+m = Checker(context, level='parse')
 
 start_time = time.time()
 m.checkFile()
@@ -15,6 +21,7 @@ print('***********')
 print('REPORT')
 print('***********')
 print('Execution time:', exec_time, 'seconds')
+print('Report:', m.getReport())
 # print('class names:', lexer.report['class_name'])
 # print()
 # print('function names:', lexer.report['func_name'])
