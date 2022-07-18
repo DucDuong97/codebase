@@ -8,4 +8,5 @@ def funcname_camel(node, context, report):
     report['func_name'].append(func_name)
     result = {}
     result['violated'] = violated
+    result['message'] = 'Use lowerCamelCase. found name: {}'.format(func_name)
     return result

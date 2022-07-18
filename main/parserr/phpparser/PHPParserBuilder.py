@@ -12,6 +12,7 @@ class PHPParserBuilder(ParserBuilder):
             'class_name':[],
             'func_name':[],
             'var_name':[],
+            'const_name':[],
         }
         checkers = {}
         for item in phpast.getNodeList():

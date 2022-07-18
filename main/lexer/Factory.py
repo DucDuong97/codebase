@@ -32,8 +32,8 @@ class LexerFactory(object):
         m.addRule('SEMI', 'semicolon_nospace')
         m.addRule('COMMA', 'comma_space')
 
-        m.addRuleOnGroup(php_assignments, 'binops_nospace')
-        m.addRuleOnGroup(php_bin_ops, 'binops_nospace')
+        # m.addRuleOnGroup(php_assignments, 'binops_nospace')
+        # m.addRuleOnGroup(php_bin_ops, 'binops_nospace')
 
         m.addRule('BOOLEAN_NOT', 'unops_nospace')
         m.addRuleOnGroup(php_un_ops, 'unops_nospace')

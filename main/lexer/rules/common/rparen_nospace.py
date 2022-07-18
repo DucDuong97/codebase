@@ -11,4 +11,5 @@ def rparen_nospace(t, context, report):
         break
     result = {}
     result['violated'] = violated
+    result['message'] = 'Parenthesis () : There is NO space after ( and No space before ).'
     return result

@@ -11,4 +11,5 @@ def rbracket_nospace(t, context, report):
         break
     result = {}
     result['violated'] = violated
+    result['message'] = 'Curly braces: There is NO space after { and No space before }.'
     return result

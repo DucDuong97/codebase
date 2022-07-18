@@ -8,4 +8,5 @@ def classname_pascal(node, context, report):
     report['class_name'].append(class_name)
     result = {}
     result['violated'] = violated
+    result['message'] = 'Use singular CamelCase. found name: {}'.format(class_name)
     return result
