@@ -68,7 +68,7 @@
 		protected function validateCsrfToken($key) {
 			$session = Application::$app->getSession();
 			$csrf_Token = $session->get($key);
-			if  (empty($_POST[$key])) {
+			if (empty ($_POST[$key])) {
 				return $csrf_token == $_POST[$key];
 			}
 			return false;

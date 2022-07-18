@@ -6,4 +6,5 @@ def keyword_lower_onespace(t, context, report):
     violated = violated or t.lexer.lexdata[t.lexpos+len(keyword)+1] == ' '
     result = {}
     result['violated'] = violated
+    result['message'] = 'keyword: {}'.format(t.value)
     return result

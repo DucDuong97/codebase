@@ -106,7 +106,7 @@
                                         "random_bytes",
                                         [
                                             Parameter(
-                                                StaticProperty(
+                                                StaticPxroperty(
                                                     "static", "CSRF_TOKEN_LENGTH"
                                                 ),
                                                 False,

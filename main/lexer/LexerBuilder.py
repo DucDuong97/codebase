@@ -30,6 +30,9 @@ class LexerBuilder(object):
         
         self.checkers[pattern].append(attr)
     
+    def addRuleOnGroup(self, group, rule):
+        for pattern in group:
+            self.addRule(pattern, rule)
 
     def addRules(self, pattern, rules=[]):
         for rule in rules:
@@ -37,9 +40,6 @@ class LexerBuilder(object):
 
     def setContext(self, context):
         self.context = context
-
-    def setReport(self, report):
-        self.report = self.report | report
 
     # Build the lexer
     def build(self, module=None, **kwargs):
@@ -51,12 +51,16 @@ class LexerBuilder(object):
         oldToken = self.lexer.token
 
         def violationHandler(t, result={}):
+            message = ''
+            if 'message' in result:
+                message = result['message']
             print("""
                 ------------------------
                 violate: {}
+                message: {}
                 line: {}
                 file: {}
-            """.format(result['name'], t.lexer.lineno, t.lexer.context['file']))
+            """.format(result['name'], message, t.lexer.lineno, t.lexer.context['file']))
 
         def newToken(inner_self):
             tok = oldToken()

@@ -49,20 +49,30 @@ unparsed = (
     'COMMENT', 'DOC_COMMENT',
 )
 
-tokens = reserved + unparsed + (
+bin_ops = (
+
     # Operators
     'PLUS', 'MINUS', 'MUL', 'DIV', 'MOD', 'AND', 'OR', 'NOT', 'XOR', 'SL',
     'SR', 'BOOLEAN_AND', 'BOOLEAN_OR', 'BOOLEAN_NOT', 'IS_SMALLER',
     'IS_GREATER', 'IS_SMALLER_OR_EQUAL', 'IS_GREATER_OR_EQUAL', 'IS_EQUAL',
     'IS_NOT_EQUAL', 'IS_IDENTICAL', 'IS_NOT_IDENTICAL',
+)
+
+un_ops = (
+
+    # Increment/decrement
+    'INC', 'DEC',
+)
+
+assignments = (
 
     # Assignment operators
     'EQUALS', 'MUL_EQUAL', 'DIV_EQUAL', 'MOD_EQUAL', 'PLUS_EQUAL',
     'MINUS_EQUAL', 'SL_EQUAL', 'SR_EQUAL', 'AND_EQUAL', 'OR_EQUAL',
     'XOR_EQUAL', 'CONCAT_EQUAL',
+)
 
-    # Increment/decrement
-    'INC', 'DEC',
+tokens = reserved + unparsed + bin_ops + un_ops + assignments + (
 
     # Arrows
     'OBJECT_OPERATOR', 'DOUBLE_ARROW', 'DOUBLE_COLON',
