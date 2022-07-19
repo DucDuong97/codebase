@@ -1,30 +1,41 @@
+import sys
 import time
 
 from checker.Checker import Checker
+from structure_analyser.AppAnalyser import AppAnalyser
 
+dir = sys.argv[1]
 
-# need to find a JS PLY
-context={
-    'file':'../files/test.php',
-    'lang':'php',
-    'type': 'dev',
-}
+print('***********')
+print('ANALYZING')
+structure_analyser = AppAnalyser(dir)
 
-m = Checker(context, level='parse')
+constexts = structure_analyser.getContexts()
+print('FINISH ANALYZING')
+print('***********')
+print()
+
+m = Checker(level='parse')
 
 start_time = time.time()
-m.checkFile()
-exec_time = time.time() - start_time
+for context in constexts:
+    m.checkContext(context)
+    
+    report = m.getReport()
 
-print()
-print('***********')
-print('REPORT')
-print('***********')
+    print()
+    print('***********')
+    print('REPORT')
+    print('***********')
+    print('file:', context['file'])
+    print('total lines:', report['total_lines'])
+    print()
+    print('class names:', report['class_name'])
+    print()
+    print('function names:', report['func_name'])
+    print()
+    print('variable names:', report['var_name'])
+    print('***********')
+
+exec_time = time.time() - start_time
 print('Execution time:', exec_time, 'seconds')
-print('Report:', m.getReport())
-# print('class names:', lexer.report['class_name'])
-# print()
-# print('function names:', lexer.report['func_name'])
-# print()
-# print('variable names:', lexer.report['var_name'])
-# print()

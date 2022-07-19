@@ -6,56 +6,54 @@ from .jslexer.JSLexerBuilder import JSLexerBuilder
 from .csslexer.CSSLexerBuilder import CSSLexerBuilder
 
 class LexerFactory(object):
-    def __init__(self):
-        pass
 
     @staticmethod
-    def getLexer(lang, context={}, report={}):
+    def getLexer(lang, context={}):
         if lang == 'php':
-            return LexerFactory.buildPHPLexer(context, report)
+            return LexerFactory.buildPHPLexer(context)
         if lang == 'js':
-            return LexerFactory.buildJSLexer(context, report)
+            return LexerFactory.buildJSLexer(context)
         if lang == 'css':
-            return LexerFactory.buildCSSLexer(context, report)
+            return LexerFactory.buildCSSLexer(context)
         return False
 
     @staticmethod
-    def buildPHPLexer(context, report):
-        m = PHPLexerBuilder()
+    def buildPHPLexer(context):
+        builder = PHPLexerBuilder()
 
-        m.setContext(context)
+        builder.setContext(context)
 
-        m.addRule('LPAREN', 'lparen_nospace')
-        m.addRule('RPAREN', 'rparen_nospace')
-        m.addRules('LBRACE', ['lbracket_nospace', 'nospace_paren_brace'])
-        m.addRule('RBRACE', 'rbracket_nospace')
-        m.addRule('SEMI', 'semicolon_nospace')
-        m.addRule('COMMA', 'comma_space')
+        builder.addRule('LPAREN', 'lparen_nospace')
+        builder.addRule('RPAREN', 'rparen_nospace')
+        builder.addRules('LBRACE', ['lbracket_nospace', 'nospace_paren_brace'])
+        builder.addRule('RBRACE', 'rbracket_nospace')
+        builder.addRule('SEMI', 'semicolon_nospace')
+        builder.addRule('COMMA', 'comma_space')
 
         # m.addRuleOnGroup(php_assignments, 'binops_nospace')
         # m.addRuleOnGroup(php_bin_ops, 'binops_nospace')
 
-        m.addRule('BOOLEAN_NOT', 'unops_nospace')
-        m.addRuleOnGroup(php_un_ops, 'unops_nospace')
+        builder.addRule('BOOLEAN_NOT', 'unops_nospace')
+        builder.addRuleOnGroup(php_un_ops, 'unops_nospace')
 
-        m.addRuleOnGroup(php_keywords, 'keyword_lower_onespace')
-        
-        return m.build()
+        builder.addRuleOnGroup(php_keywords, 'keyword_lower_onespace')
+
+        return builder.build()
 
 
     @staticmethod
     def buildJSLexer(context):
-        m = JSLexerBuilder()
+        builder = JSLexerBuilder()
 
-        m.setContext(context)
+        builder.setContext(context)
 
-        return m.build()
+        return builder.build()
 
 
     @staticmethod
     def buildCSSLexer(context):
-        m = CSSLexerBuilder()
+        builder = CSSLexerBuilder()
 
-        m.setContext(context)
+        builder.setContext(context)
 
-        return m.build()
+        return builder.build()

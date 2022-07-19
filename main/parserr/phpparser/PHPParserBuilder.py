@@ -9,10 +9,10 @@ class PHPParserBuilder(ParserBuilder):
     
     def __init__(self):
         report = {
-            'class_name':[],
-            'func_name':[],
-            'var_name':[],
-            'const_name':[],
+            'class_name': set(),
+            'func_name': set(),
+            'var_name': set(),
+            'const_name': set(),
         }
         checkers = {}
         for item in phpast.getNodeList():

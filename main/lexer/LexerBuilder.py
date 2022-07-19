@@ -44,11 +44,11 @@ class LexerBuilder(object):
     # Build the lexer
     def build(self, module=None, **kwargs):
         if module == None:
-            self.lexer = lex.lex(module=self, **kwargs)
+            lexer = lex.lex(module=self, **kwargs)
         else:
-            self.lexer = lex.lex(module=module, **kwargs)
+            lexer = lex.lex(module=module, **kwargs)
 
-        oldToken = self.lexer.token
+        oldToken = lexer.token
 
         def violationHandler(t, result={}):
             message = ''
@@ -79,9 +79,9 @@ class LexerBuilder(object):
             return tok
 
         # replace bark with new_bark for this object only
-        self.lexer.token = types.MethodType(newToken, self.lexer)
+        lexer.token = types.MethodType(newToken, lexer)
 
-        self.lexer.lasttok = None
-        self.lexer.context = self.context
+        lexer.lasttok = None
+        lexer.context = self.context
         
-        return self.lexer
+        return lexer

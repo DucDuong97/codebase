@@ -39,13 +39,21 @@ class ParserBuilder(object):
     def setContext(self, context):
         self.context = context
     
-
+    _parser = None
+    _original_parse = None
+    
     # Build the parser
     def build(self, module, **kwargs):
 
-        self.parser = yacc.yacc(module=module)
+        if ParserBuilder._parser is not None:
+            ParserBuilder._parser.restart()
+            parser = ParserBuilder._parser
+        else:
+            parser = yacc.yacc(module=module)
+            ParserBuilder._parser = parser
+            ParserBuilder._original_parse = parser.parse
 
-        oldParse = self.parser.parse
+        
 
         def violationHandler(node, result={}):
             message = ''
@@ -61,7 +69,7 @@ class ParserBuilder(object):
 
 
         def newParse(ignored, input=None, lexer=None, debug=False, tracking=False):
-            ast = oldParse(input, lexer, debug, tracking)
+            ast = ParserBuilder._original_parse(input, lexer, debug, tracking)
 
             def traverse(nodes, checkers):
                 def visitor(node):
@@ -76,6 +84,6 @@ class ParserBuilder(object):
             traverse(ast, self.checkers)
             return [ast, self.report]
 
-        # replace bark with new_bark for this object only
-        self.parser.parse = types.MethodType(newParse, self.parser)
-        return self.parser
+        parser.parse = types.MethodType(newParse, parser)
+
+        return parser

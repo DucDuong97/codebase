@@ -1631,7 +1631,7 @@ def p_error(t):
     if t.type in ['WHITESPACE','OPEN_TAG','OPEN_TAG_WITH_ECHO','CLOSE_TAG','COMMENT', 'DOC_COMMENT']:
         return
     if t:
-        raise SyntaxError('invalid syntax', (None, t.lineno, None, t.value))
+        raise SyntaxError('invalid syntax {} {}'.format(t.lineno, t.value), (None, t.lineno, None, t.value))
     else:
         raise SyntaxError('unexpected EOF while parsing', (None, None, None, None))
 
