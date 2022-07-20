@@ -4,32 +4,12 @@ Stylesheet(
             ['.activity-container .base-block'], 
             declarations=[
                 Declaration(Ident('padding'), '10px 0 10px 45px'), 
-                Declaration(Ident('border-bottom'), '1px solid #f1f1f1')]
-        ),
-        Ruleset(
-            ['.activity-container .base-block:hover']
-        ), 
-        Ruleset(
-            ['.activity-container .base-block .-avatar'],
-            declarations=[Declaration(Ident('top'), Term('15px'))]
-        ), 
-        Ruleset(
-            ['.activity-container .base-block .base-avatar'], 
-            declarations=[
-                Declaration(Ident('width'), Term('35px')), 
-                Declaration(Ident('height'), Term('35px'))
+                Declaration(Ident('border-bottom'), '1px solid #f1f1f1'), 
+                Declaration(Ident('$bg'), '@success')
             ]
         ), Ruleset(
-            ['.activity-container .base-block b']
-        ), 
-        Ruleset(
-            ['.activity-container .base-block .symbol-icon'], 
+            ['.activity-container .base-block .-avatar'], 
             declarations=[
-                Declaration(Ident('right'), Term('10px')), 
-                Declaration(Ident('bottom'), Term('10px')), 
-                Declaration(Ident('left'), Ident('initial')), 
-                Declaration(Ident('top'), Ident('initial'))
+                Declaration(Ident('top'), Term('15px'))
             ]
-        )
-    ]
-)
+        ), Ruleset(['.activity-container .base-block .symbol-icon'], declarations=[Declaration(Ident('right'), Term('10px')), Declaration(Ident('bottom'), Term('10px')), Declaration(Ident('top'), Ident('initial'))])])

@@ -33,6 +33,7 @@ softsp         = r_opt(r_or(r'\r\n', r'[ \t\r\n\f]'))
 
 s              = r_plus(r'[ \t\r\n\f]')
 w              = r_opt(s)
+dollar         = r_opt('\$')
 nl             = r'\n|\r\n|\r|\f'
 
 h              = r'[0-9a-fA-F]'
@@ -109,7 +110,7 @@ class csslexer(object):
         'CDO', 'CDC', 'INCLUDES', 'DASHMATCH',
         'LBRACE', 'PLUS', 'GREATER', 'COMMA',
         'STRING', 'INVALID',
-        'IDENT',
+        'IDENT', 'DIRECTIVE',
         'HASH',
         'IMPORT_SYM', 'PAGE_SYM', 'MEDIA_SYM', 'CHARSET_SYM',
         'IMPORTANT_SYM',
@@ -142,7 +143,7 @@ class csslexer(object):
     
     @TOKEN(string)
     def t_STRING(self, t):
-        t.lexer.lineno += len(re.findall(nl,t.value)) 
+        t.lexer.lineno += len(re.findall(nl,t.value))
         return t
     
     @TOKEN(invalid)
@@ -150,7 +151,8 @@ class csslexer(object):
         t.lexer.lineno += len(re.findall(nl,t.value)) 
         return t
     
-    t_IDENT = ident
+    t_IDENT = dollar + ident
+    t_DIRECTIVE = r'@' + name;
     
     t_HASH         = r'\#' + name
     

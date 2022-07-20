@@ -301,6 +301,7 @@ class LRParser:
             lexer.input(input)
 
         # Set the token function
+        print(lexer.ping)
         get_token = self.token = lexer.token
 
         # Set up the state and symbol stacks

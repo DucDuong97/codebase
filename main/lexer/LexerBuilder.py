@@ -75,6 +75,7 @@ class LexerBuilder(object):
                     result['name'] = checker.__name__
                     violationHandler(tok, result=result)
             inner_self.lasttok = tok.type
+        
             return tok
 
         # replace bark with new_bark for this object only
@@ -82,5 +83,5 @@ class LexerBuilder(object):
 
         lexer.lasttok = None
         lexer.context = self.context
-        
+        lexer.ping = 'pong'
         return lexer

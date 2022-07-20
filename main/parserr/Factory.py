@@ -1,5 +1,6 @@
 
 from .phpparser.PHPParserBuilder import PHPParserBuilder
+from .cssparser.CSSParserBuilder import CSSParserBuilder
 from .jsparser.JSParserBuilder import JSParserBuilder
 
 class ParserFactory(object):
@@ -41,10 +42,9 @@ class ParserFactory(object):
 
 
     @staticmethod
-    def buildCSSParser(context, report):
-        m = JSParserBuilder()
+    def buildCSSParser(context):
+        m = CSSParserBuilder()
 
         m.setContext(context)
-        m.setReport(report)
 
         return m.build()
