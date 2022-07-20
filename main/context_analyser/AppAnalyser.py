@@ -12,10 +12,13 @@ class AppAnalyser(object):
     JS_DIR   = os.path.join(Path(__file__).parent,'temp','jss')
     
     def __init__(self, dir):
-        shutil.copytree(os.path.join(dir,'dev') , os.path.join(AppAnalyser.TEMP_DIR,'dev'))
-        shutil.copytree(os.path.join(dir,'apps'), os.path.join(AppAnalyser.TEMP_DIR,'apps'))
-        # shutil.copytree(os.path.join(dir,'apt','static','js'), os.path.join(self.TEMP_DIR,'js'))
-        # shutil.copytree(os.path.join(dir,'apt','static','css'), os.path.join(self.TEMP_DIR,'css'))
+        try:
+            shutil.copytree(os.path.join(dir,'dev') , os.path.join(AppAnalyser.TEMP_DIR,'dev'))
+            shutil.copytree(os.path.join(dir,'apps'), os.path.join(AppAnalyser.TEMP_DIR,'apps'))
+            # shutil.copytree(os.path.join(dir,'apt','static','js'), os.path.join(self.TEMP_DIR,'js'))
+            # shutil.copytree(os.path.join(dir,'apt','static','css'), os.path.join(self.TEMP_DIR,'css'))
+        except Exception as e:
+            print('Error: your app folder is not well constructed.')
         self.dev_dirs = list(Path(AppAnalyser.DEV_DIR).rglob("*.php"))
         self.apps_dirs = list(Path(AppAnalyser.APPS_DIR).rglob("*.php"))
         # self.css_dirs = list(Path(self.CSS_DIR).rglob("*.css"))

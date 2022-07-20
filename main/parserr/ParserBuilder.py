@@ -82,7 +82,10 @@ class ParserBuilder(object):
                         if result['violated']:
                             violationHandler(node, result=result)
                 for node in nodes:
-                    node.accept(visitor)
+                    try:
+                        node.accept(visitor)
+                    except Exception as e:
+                        print(str(e))
 
             traverse(ast, self.checkers)
             return [True, ast, self.report]
