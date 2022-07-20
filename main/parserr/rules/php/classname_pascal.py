@@ -9,4 +9,5 @@ def classname_pascal(node, context, report):
     result = {}
     result['violated'] = violated
     result['message'] = 'Use singular CamelCase. found name: {}'.format(class_name)
+    result['lineno'] = node.lineno
     return result

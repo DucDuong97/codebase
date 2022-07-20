@@ -4,4 +4,5 @@ def comma_space(t, context, report):
     result = {}
     result['violated'] = violated
     result['message'] = ' There is one space AFTER comma'
+    result['lineno'] = t.lexer.lineno
     return result

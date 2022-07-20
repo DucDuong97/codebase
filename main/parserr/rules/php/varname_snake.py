@@ -14,4 +14,5 @@ def varname_snake(node, context, report):
     report['var_name'].add(var_name)
     result['violated'] = violated
     result['message'] = 'Use lower case with underscore. Found name: {}'.format(var_name)
+    result['lineno'] = node.lineno
     return result

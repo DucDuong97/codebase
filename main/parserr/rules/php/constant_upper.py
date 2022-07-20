@@ -13,4 +13,5 @@ def constant_upper(node, context, report):
     report['const_name'].add(const_name)
     result['violated'] = violated
     result['message'] = 'Constant must be UPPERCASE seperable by underscore. Found name: {}'.format(const_name)
+    result['lineno'] = node.lineno
     return result

@@ -9,4 +9,5 @@ def funcname_camel(node, context, report):
     result = {}
     result['violated'] = violated
     result['message'] = 'Use lowerCamelCase. found name: {}'.format(func_name)
+    result['lineno'] = node.lineno
     return result

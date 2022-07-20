@@ -35,16 +35,16 @@ class Checker(object):
         if self.level == 'lex':
             lex.runmain(self.lexer, data)
             return
-        [ast, report] = self.parser.parse(data, lexer=self.lexer)
-        self.report = report
-        self.report['total_lines'] = self.lexer.lineno
+        [success, ast, report] = self.parser.parse(data, lexer=self.lexer)
+        if success:
+            self.report = report
+            self.report['total_lines'] = self.lexer.lineno
         
     
     def checkContext(self, context):
         self.context = context
 
         self.lexer = LexerFactory.getLexer(self.context['lang'], self.context)
-        print(self.lexer.lineno)
         if self.level == 'parse':
             self.parser = ParserFactory.getParser(self.context['lang'], self.context)
         
@@ -56,8 +56,3 @@ class Checker(object):
             content = f.read()
             self.check(content)
 
-
-    def reset(self):
-        self.report['total_lines'] += self.lexer.lineno
-        self.lexer.lineno = 1
-        self.report['tokens'] = []

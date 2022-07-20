@@ -4,4 +4,5 @@ def semicolon_nospace(t, context, report):
     result = {}
     result['violated'] = violated
     result['message'] = 'No space before semicolon'
+    result['lineno'] = t.lexer.lineno
     return result

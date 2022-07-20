@@ -11,4 +11,5 @@ def keyword_lower_onespace(t, context, report):
     result = {}
     result['violated'] = violated
     result['message'] = 'Keyword must be in lowercase. There is one space after. Found: {}'.format(t.value)
+    result['lineno'] = t.lexer.lineno
     return result

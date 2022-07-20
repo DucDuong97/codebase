@@ -5,5 +5,6 @@ def binops_nospace(t, context, report):
     result = {}
     result['violated'] = violated
     result['message'] = 'Assignments & binary ops: There is one space BEFORE and one space AFTER. Found: {}'.format(t.value)
+    result['lineno'] = t.lexer.lineno
     return result
         

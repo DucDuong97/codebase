@@ -4,4 +4,5 @@ def unops_nospace(t, context, report):
     result = {}
     result['violated'] = violated
     result['message'] = 'Unary operator: NO space after. Found: {}'.format(t.value)
+    result['lineno'] = t.lexer.lineno
     return result

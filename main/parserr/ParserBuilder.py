@@ -64,12 +64,15 @@ class ParserBuilder(object):
                 violate: {}
                 message: {}
                 line: {}
-                file: {}
-            """.format(result['name'], message, node.lineno, self.context['file']))
+            """.format(result['name'], message, result['lineno']))
 
 
         def newParse(ignored, input=None, lexer=None, debug=False, tracking=False):
-            ast = ParserBuilder._original_parse(input, lexer, debug, tracking)
+            try:
+                ast = ParserBuilder._original_parse(input, lexer, debug, tracking)
+            except SyntaxError as e:
+                print(str(e))
+                return [False, None, None]
 
             def traverse(nodes, checkers):
                 def visitor(node):
@@ -82,7 +85,7 @@ class ParserBuilder(object):
                     node.accept(visitor)
 
             traverse(ast, self.checkers)
-            return [ast, self.report]
+            return [True, ast, self.report]
 
         parser.parse = types.MethodType(newParse, parser)
 

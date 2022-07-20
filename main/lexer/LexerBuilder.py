@@ -59,8 +59,7 @@ class LexerBuilder(object):
                 violate: {}
                 message: {}
                 line: {}
-                file: {}
-            """.format(result['name'], message, t.lexer.lineno, t.lexer.context['file']))
+            """.format(result['name'], message, result['lineno']))
 
         def newToken(inner_self):
             tok = oldToken()

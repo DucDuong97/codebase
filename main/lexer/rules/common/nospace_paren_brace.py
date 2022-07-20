@@ -5,4 +5,5 @@ def nospace_paren_brace(t, context, report):
     result = {}
     result['violated'] = violated
     result['message'] = 'In general, there is no space between bracket ) and curly brace {'
+    result['lineno'] = t.lexer.lineno
     return result
